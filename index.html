@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/images/favicon-32x32.png"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Frontend Mentor | Contact form</title>
+
+    <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  </head>
+  <body>
+    <div class="main_container">
+      <h1>Contact Us</h1>
+
+      <form id="MyForm" action="#">
+        <div class="name-row">
+          <div class="input-group">
+            <label for="firstName">First Name <span>*</span></label>
+            <input type="text" id="firstName" name="name" />
+            <p class="error">This field is requierd</p>
+          </div>
+
+          <div class="input-group">
+            <label for="lastName">Last Name <span>*</span></label>
+            <input type="text" id="lastName" name="lastName" />
+            <p class="error">This field is requierd</p>
+          </div>
+        </div>
+
+        <label for="email">Email Address <span>*</span></label>
+        <input type="email" id="email" name="email" />
+        <p class="error">Please insert a valid email adress</p>
+
+        <p>Query Types <span>*</span></p>
+
+        <div class="radio-row">
+          <div class="radio-group">
+            <label class="radio-label" for="general">
+              <input type="radio" id="general" name="enquiry" />
+              General Enquiry
+            </label>
+          </div>
+
+          <div class="radio-group">
+            <label class="radio-label" for="support">
+              <input type="radio" id="support" name="enquiry" />
+              Support Request
+            </label>
+          </div>
+        </div>
+
+        <p class="error">Please select a query type</p>
+        <label for="message">Message <span>*</span></label>
+        <input class="message" type="text" id="message" name="message" />
+        <p class="error">This field is requered</p>
+
+        <label class="check-box" for="chckbox">
+          <input type="checkbox" /> I cosert to being contacted by the team
+          <span>*</span>
+        </label>
+
+        <p class="error">
+          To submit this form, please consept to being contacted
+        </p>
+
+        <input class="button" type="submit" value="Submit" />
+      </form>
+
+      <div class="succsess_container">
+        <div class="succsess_heaader">
+          <img src="assets/images/icon-success-check.svg" alt="img" />
+          <h2>Message send succsessful!</h2>
+        </div>
+        <p>Thanks for complating. We will be touch soon.</p>
+      </div>
+    </div>
+
+    <script>
+      // let MyForm = document.querySelector("#MyForm");
+      // let SuccsessContainer = document.querySelector(".succsess_container");
+      // let Errors = document.querySelector(".error");
+
+      // MyForm.addEventListener("submit", function (e) {
+      //   e.preventDefault();
+
+      //   const inputs = MyForm.querySelectorAll("input");
+      //   let allFilled = true;
+
+      //   inputs.forEach((input) => {
+      //     if (input.value.trim() === "") {
+      //       input.style.border = "1px solid red";
+      //       allFilled = false;
+      //     } else {
+      //       input.style.border = "1px solid green";
+      //     }
+      //   });
+
+      //   if (allFilled) {
+      //     SuccsessContainer.style.display = "block";
+      //     form.reset(); // ფორმის გასუფთავება
+      //   } else {
+      //     inputs.style.border = "1px solid red";
+      //     Errors.style.display = "block";
+      //   }
+      // });
+
+      let MyForm = document.querySelector("#MyForm");
+      let SuccsessContainer = document.querySelector(".succsess_container");
+
+      MyForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        let allFilled = true;
+
+        // ყველა input-group (text/email/message)
+        const groups = MyForm.querySelectorAll(
+          ".input-group, #email, #message",
+        );
+
+        // TEXT INPUTS
+        const textInputs = MyForm.querySelectorAll(
+          'input[type="text"], input[type="email"]',
+        );
+
+        textInputs.forEach((input) => {
+          const error = input.nextElementSibling;
+
+          if (input.value.trim() === "") {
+            input.style.border = "1px solid red";
+            error.style.display = "block";
+            allFilled = false;
+          } else {
+            input.style.border = "1px solid green";
+            error.style.display = "none";
+          }
+        });
+
+        // RADIO
+        const radios = MyForm.querySelectorAll('input[name="enquiry"]');
+        const radioError = MyForm.querySelector(".radio-row + .error");
+
+        const isRadioChecked = [...radios].some((radio) => radio.checked);
+
+        if (!isRadioChecked) {
+          radioError.style.display = "block";
+          allFilled = false;
+        } else {
+          radioError.style.display = "none";
+        }
+
+        // MESSAGE
+        const message = document.querySelector("#message");
+        const messageError = message.nextElementSibling;
+
+        if (message.value.trim() === "") {
+          message.style.border = "1px solid red";
+          messageError.style.display = "block";
+          allFilled = false;
+        } else {
+          message.style.border = "1px solid green";
+          messageError.style.display = "none";
+        }
+
+        // CHECKBOX
+        const checkbox = MyForm.querySelector('input[type="checkbox"]');
+        const checkboxError = checkbox.closest("label").nextElementSibling;
+
+        if (!checkbox.checked) {
+          checkboxError.style.display = "block";
+          allFilled = false;
+        } else {
+          checkboxError.style.display = "none";
+        }
+
+        // SUCCESS
+        if (allFilled) {
+          SuccsessContainer.style.display = "block";
+          MyForm.reset();
+        }
+      });
+    </script>
+  </body>
+</html>
